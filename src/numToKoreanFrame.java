@@ -58,7 +58,9 @@ public class numToKoreanFrame extends JFrame {
                     try {
                         StringBuilder sb = new StringBuilder();
                         int num = Integer.parseInt(str);
-
+                        if (num < 0) {
+                            throw new IllegalArgumentException("음수는 작성하지 마세요");
+                        }
                         if (num >= 100000000) {
                             int b = num / 100000000;
                             num %= 100000000;
@@ -69,12 +71,17 @@ public class numToKoreanFrame extends JFrame {
                             int b = num / 10000;
                             num %= 10000;
                             appendNumber(sb, b, digits, unitMap, subDigits);
+                            if (sb.substring(0, 1).equals("일")) {
+                                sb.delete(0, 1);
+                            }
                             sb.append("만");
                         }
                         appendNumber(sb, num, digits, unitMap, subDigits);
                         jta02.setText(sb.toString());
                     } catch (NumberFormatException ex) {
                         jta02.setText("Integer 범위만 써주세요");
+                    } catch (IllegalArgumentException exception) {
+                        jta02.setText(exception.getMessage());
                     }
                 }
             }
